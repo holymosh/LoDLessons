@@ -6,17 +6,16 @@ namespace EquationsSolver
     {
         static void Main(string[] args)
         {
-            String equation = Console.ReadLine();
-            EquationSolver equationSolver = new EquationSolver();
-            double[] solutions = equationSolver.Solve(equationSolver.Parse(equation));
+            var equation = Console.ReadLine();
+            var equationSolver = new EquationSolver();
+            var solutions = equationSolver.Solve(equationSolver.Parse(equation));
             Console.WriteLine($"{solutions[0]}  {solutions[1]}");
         }
 
         public double[] Parse(String equation)
         {
             equation = equation.Remove(equation.IndexOf("^2"), 2);
-            Console.WriteLine(equation);
-            double[] coefficients = new double[3];
+            var coefficients = new double[3];
             for (int i = 0; i < 3; i++)
             {
                 coefficients[i] = FindCoefficient(ref equation);
@@ -26,9 +25,9 @@ namespace EquationsSolver
 
         public double FindCoefficient( ref String equation)
         {
-            string buffer = String.Empty;
-            double coefficient = 1.00;
-            int i = 0;
+            var buffer = String.Empty;
+            var coefficient = 1.00;
+            var i = 0;
             while (equation[i] != 'x' && equation[i]!='=')
             {
                 buffer += equation[i];
@@ -51,17 +50,10 @@ namespace EquationsSolver
 
         public double[] Solve(double[] coefficients)
         {
-            double[] solutions = new double[2];
-            double discriminant = coefficients[1] * coefficients[1] - 4 * coefficients[0] * coefficients[2];
-            if (discriminant < 0)
-            {
-                Console.WriteLine("D<0");
-            }
-            else
-            {
-                solutions[0] = (-coefficients[1] + Math.Sqrt(discriminant)) / (2 * coefficients[0]);
-                solutions[1] = (-coefficients[1] - Math.Sqrt(discriminant)) / (2 * coefficients[0]);
-            }
+            var solutions = new double[2];
+            var discriminant = coefficients[1] * coefficients[1] - 4 * coefficients[0] * coefficients[2];
+            solutions[0] = (-coefficients[1] + Math.Sqrt(discriminant)) / (2 * coefficients[0]);
+            solutions[1] = (-coefficients[1] - Math.Sqrt(discriminant)) / (2 * coefficients[0]);
             return solutions;
 
         }
