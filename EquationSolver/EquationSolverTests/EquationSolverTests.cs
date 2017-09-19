@@ -9,13 +9,13 @@ namespace EquationSolverTests
         [TestMethod]
         public void ParseCoeffitionsWhenFirstCoefficitionIsLessThanZero()
         {
-            //act
+            //arrange
             var equation = "-5x^2+5x+5=0";
             var solver = new EquationSolver();
             var coeffitions = new[] { -5.0, 5.0, 5.0 };
             var coeffitionsFromSolver = new double[3];
 
-            //arrange
+            //act
             coeffitionsFromSolver = solver.Parse(equation);
 
             //Assert
@@ -27,10 +27,13 @@ namespace EquationSolverTests
         [TestMethod]
         public void ParseWhenCoeffitionsEqualsOne()
         {
+            //arrange
             var equation = "-x^2-x-1=0";
             var solver = new EquationSolver();
             var coeffitions = new[] { -1.0, -1.0, -1.0 };
+            //act
             var coeffitionsFromSolver = solver.Parse(equation);
+            //assert
             Assert.IsTrue(coeffitions[0] == coeffitionsFromSolver[0] &&
                           coeffitions[1] == coeffitionsFromSolver[1] &&
                           coeffitions[2] == coeffitionsFromSolver[2]);
@@ -40,10 +43,13 @@ namespace EquationSolverTests
         [TestMethod]
         public void ParseWhenCoeffitionsEqualsMinusOne()
         {
+            //arrange
             var equation = "x^2+x+1=0";
             var solver = new EquationSolver();
             var coeffitions = new[] { 1.0, 1.0, 1.0 };
+            //act
             var coeffitionsFromSolver = solver.Parse(equation);
+            //assert
             Assert.IsTrue(coeffitions[0] == coeffitionsFromSolver[0] &&
                           coeffitions[1] == coeffitionsFromSolver[1] &&
                           coeffitions[2] == coeffitionsFromSolver[2]);
@@ -53,10 +59,13 @@ namespace EquationSolverTests
         [TestMethod]
         public void ParseCoeffitionsWhenSecondCoeffitionIsLessThanZero()
         {
+            //arrange
             var equation = "10x^2-10x+20=0";
             var solver = new EquationSolver();
             var coeffitions = new[] { 10.0, -10.0, 20.0 };
+            //act
             var coeffitionsFromSolver = solver.Parse(equation);
+            //assert
             Assert.IsTrue(coeffitions[0] == coeffitionsFromSolver[0] &&
                           coeffitions[1] == coeffitionsFromSolver[1] &&
                           coeffitions[2] == coeffitionsFromSolver[2]);
@@ -65,12 +74,12 @@ namespace EquationSolverTests
         [TestMethod]
         public void CalculateDiscriminant()
         {
-            //act
+            //arrange
             var equationSolver = new EquationSolver();
             var a = 4.0;
             var b = 8.0;
             var c = 2.0;
-            //arrange
+            //act
             var discriminant = equationSolver.CalculateDiscriminant(a, b, c);
             //Assert
             Assert.AreEqual(discriminant,32.0);
@@ -79,13 +88,13 @@ namespace EquationSolverTests
         [TestMethod]
         public void SolveEquationWhenSolutionsAreSame()
         {
-            // act
+            // arrange
             var equationSolver = new EquationSolver();
             var equation = "x^2-4x+4=0";
             var coefficitions = equationSolver.Parse(equation);
             var solutions = new[] { 2.0, 2.0 };
 
-            // arrange
+            // act
             var solutionsFromSolver = equationSolver.Solve(coefficitions[0],coefficitions[1],coefficitions[2]);
 
             //assert
@@ -96,13 +105,13 @@ namespace EquationSolverTests
         [TestMethod]
         public void SolveEquationWhenSolutionsAreNotSame()
         {
-            //act
+            //arrange
             var equationSolver = new EquationSolver();
             var equation = "x^2-6x+8=0";
             var coefficitions = equationSolver.Parse(equation);
             var solutions = new[] { 4.0, 2.0 };
 
-            //arrange
+            //act
             var solutionsFromSolver = equationSolver.Solve(coefficitions[0], coefficitions[1], coefficitions[2]);
 
             //assert
