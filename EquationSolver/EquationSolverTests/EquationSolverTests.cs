@@ -61,45 +61,7 @@ namespace EquationSolverTests
                           coeffitions[1] == coeffitionsFromSolver[1] &&
                           coeffitions[2] == coeffitionsFromSolver[2]);
         }
-
-        [TestMethod]
-        public void FindCoeffitionsInEquationWhenAllCoeffitionsAreEqualsOne()
-        {
-            //act
-            var solver = new EquationSolver();
-            var equation1 = "x^2+x+1=0";
-            equation1 = equation1.Remove(equation1.IndexOf("^2"), 2);
-            var coeffitions = new double[3];
-            //arrange
-            for (int i = 0; i < 3; i++)
-            {
-                coeffitions[i] = solver.FindCoefficient( ref equation1);
-            }
-            //assert
-            Assert.IsTrue(coeffitions[0] == 1.0 &&
-                          coeffitions[1] == 1.0 &&
-                          coeffitions[2] == 1.0);
-        }
-
-        [TestMethod]
-        public void FindCoeffitionsInEquationWhenAllCoeffitionsAreEqualsMinusOne()
-        {
-            //act
-            var solver = new EquationSolver();
-            var equation1 = "-x^2-x-1=0";
-            equation1 = equation1.Remove(equation1.IndexOf("^2"), 2);
-            var coeffitions = new double[3];
-            //arrange
-            for (int i = 0; i < 3; i++)
-            {
-                coeffitions[i] = solver.FindCoefficient(ref equation1);
-            }
-            //assert
-            Assert.IsTrue(coeffitions[0] == -1.0 &&
-                          coeffitions[1] == -1.0 &&
-                          coeffitions[2] == -1.0);
-        }
-
+        
         [TestMethod]
         public void CalculateDiscriminant()
         {

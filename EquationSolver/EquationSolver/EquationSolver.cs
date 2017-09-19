@@ -9,45 +9,10 @@ namespace EquationsSolver
             var equation = Console.ReadLine();
             var equationSolver = new EquationSolver();
             var coeffitions = equationSolver.Parse(equation);
-            var solutions = equationSolver.Solve(coeffitions[0],coeffitions[1],coeffitions[2]);
+            var solutions = equationSolver.Solve(coeffitions[0], coeffitions[1], coeffitions[2]);
             Console.WriteLine($"{solutions[0]}  {solutions[1]}");
         }
 
-        public double[] Parse(String equation)
-        {
-            equation = equation.Remove(equation.IndexOf("^2"), 2);
-            var coefficients = new double[3];
-            for (int i = 0; i < 3; i++)
-            {
-                coefficients[i] = FindCoefficient(ref equation);
-            }
-            return coefficients;
-        }
-
-        public double FindCoefficient( ref String equation)
-        {
-            var buffer = String.Empty;
-            var coefficient = 1.00;
-            var i = 0;
-            while (equation[i] != 'x' && equation[i]!='=')
-            {
-                buffer += equation[i];
-                i++;
-            }
-            equation = equation.Remove(0, buffer.Length +1);
-            if (!(buffer == "-" || buffer == "+" || buffer == string.Empty))
-            {
-                coefficient = Convert.ToDouble(buffer);
-            }
-            else
-            {
-                if (buffer.Contains("-"))
-                {
-                    coefficient = -coefficient;
-                }
-            }
-            return coefficient;
-        }
 
         public double[] Solve(double a, double b, double c)
         {
@@ -63,5 +28,31 @@ namespace EquationsSolver
             return b * b - 4 * a * c;
         }
 
+        public double[] Parse(String equation)
+        {
+            var coefficients = new double[3];
+            equation = equation.Remove(equation.IndexOf("^2"),2);
+            equation = equation.Remove(equation.IndexOf("=0"), 2);
+            var strings = equation.Split('x');
+            for (int i = 0; i < 3; i++)
+            {
+                switch (strings[i])
+                {
+                    case "":
+                        coefficients[i] = 1.0;
+                        break;
+                    case "-":
+                        coefficients[i] = -1.0;
+                        break;
+                    case "+":
+                        coefficients[i] = 1.0;
+                        break;
+                    default:
+                        coefficients[i] = Convert.ToDouble(strings[i]);
+                        break;
+                }
+            }
+            return coefficients;
+        }
     }
 }
