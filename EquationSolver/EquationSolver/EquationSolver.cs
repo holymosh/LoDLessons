@@ -8,7 +8,8 @@ namespace EquationsSolver
         {
             var equation = Console.ReadLine();
             var equationSolver = new EquationSolver();
-            var solutions = equationSolver.Solve(equationSolver.Parse(equation));
+            var coeffitions = equationSolver.Parse(equation);
+            var solutions = equationSolver.Solve(coeffitions[0],coeffitions[1],coeffitions[2]);
             Console.WriteLine($"{solutions[0]}  {solutions[1]}");
         }
 
@@ -48,14 +49,18 @@ namespace EquationsSolver
             return coefficient;
         }
 
-        public double[] Solve(double[] coefficients)
+        public double[] Solve(double a, double b, double c)
         {
             var solutions = new double[2];
-            var discriminant = coefficients[1] * coefficients[1] - 4 * coefficients[0] * coefficients[2];
-            solutions[0] = (-coefficients[1] + Math.Sqrt(discriminant)) / (2 * coefficients[0]);
-            solutions[1] = (-coefficients[1] - Math.Sqrt(discriminant)) / (2 * coefficients[0]);
+            var discriminant = CalculateDiscriminant(a, b, c);
+            solutions[0] = (-b + Math.Sqrt(discriminant)) / (2 * a);
+            solutions[1] = (-b - Math.Sqrt(discriminant)) / (2 * a);
             return solutions;
+        }
 
+        public double CalculateDiscriminant(double a, double b, double c)
+        {
+            return b * b - 4 * a * c;
         }
 
     }

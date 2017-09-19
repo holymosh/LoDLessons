@@ -7,49 +7,63 @@ namespace EquationSolverTests
     public class EquationSolverTests
     {
         [TestMethod]
-        public void ParseEquationTests()
+        public void ParseCoeffitionsWhenFirstCoefficitionIsLessThanZero()
         {
             //act
-            var equation1 = "x^2+x+1=0";
-            var equation2 = "-x^2-x-1=0";
-            var equation3 = "10x^2-10x+20=0";
-            var equation4 = "-5x^2+5x+5=0";
+            var equation = "-5x^2+5x+5=0";
             var solver = new EquationSolver();
-            var coeffitions1 = new[] {1.0,1.0,1.0};
-            var coeffitions2 = new[] { -1.0, -1.0, -1.0 };
-            var coeffitions3 = new[] { 10.0, -10.0, 20.0 };
-            var coeffitions4 = new[] { -5.0, 5.0, 5.0 };
-            var coeffitionsFromSolver1 = new double[3];
-            var coeffitionsFromSolver2 = new double[3];
-            var coeffitionsFromSolver3 = new double[3];
-            var coeffitionsFromSolver4 = new double[3];
+            var coeffitions = new[] { -5.0, 5.0, 5.0 };
+            var coeffitionsFromSolver = new double[3];
 
             //arrange
-            coeffitionsFromSolver1 = solver.Parse(equation1);
-            coeffitionsFromSolver2 = solver.Parse(equation2);
-            coeffitionsFromSolver3 = solver.Parse(equation3);
-            coeffitionsFromSolver4 = solver.Parse(equation4);
+            coeffitionsFromSolver = solver.Parse(equation);
 
             //Assert
-            Assert.IsTrue(coeffitions1[0] == coeffitionsFromSolver1[0] &&
-                          coeffitions1[1] == coeffitionsFromSolver1[1] &&
-                          coeffitions1[2] == coeffitionsFromSolver1[2]);
-
-            Assert.IsTrue(coeffitions2[0] == coeffitionsFromSolver2[0] &&
-                          coeffitions2[1] == coeffitionsFromSolver2[1] &&
-                          coeffitions2[2] == coeffitionsFromSolver2[2]);
-
-            Assert.IsTrue(coeffitions3[0] == coeffitionsFromSolver3[0] &&
-                          coeffitions3[1] == coeffitionsFromSolver3[1] &&
-                          coeffitions3[2] == coeffitionsFromSolver3[2]);
-
-            Assert.IsTrue(coeffitions4[0] == coeffitionsFromSolver4[0] &&
-                          coeffitions4[1] == coeffitionsFromSolver4[1] &&
-                          coeffitions4[2] == coeffitionsFromSolver4[2]);
+            Assert.IsTrue(coeffitions[0] == coeffitionsFromSolver[0] &&
+                          coeffitions[1] == coeffitionsFromSolver[1] &&
+                          coeffitions[2] == coeffitionsFromSolver[2]);
         }
 
         [TestMethod]
-        public void FindCoeffitionsTests()
+        public void ParseWhenCoeffitionsEqualsOne()
+        {
+            var equation = "-x^2-x-1=0";
+            var solver = new EquationSolver();
+            var coeffitions = new[] { -1.0, -1.0, -1.0 };
+            var coeffitionsFromSolver = solver.Parse(equation);
+            Assert.IsTrue(coeffitions[0] == coeffitionsFromSolver[0] &&
+                          coeffitions[1] == coeffitionsFromSolver[1] &&
+                          coeffitions[2] == coeffitionsFromSolver[2]);
+
+        }
+
+        [TestMethod]
+        public void ParseWhenCoeffitionsEqualsMinusOne()
+        {
+            var equation = "x^2+x+1=0";
+            var solver = new EquationSolver();
+            var coeffitions = new[] { 1.0, 1.0, 1.0 };
+            var coeffitionsFromSolver = solver.Parse(equation);
+            Assert.IsTrue(coeffitions[0] == coeffitionsFromSolver[0] &&
+                          coeffitions[1] == coeffitionsFromSolver[1] &&
+                          coeffitions[2] == coeffitionsFromSolver[2]);
+
+        }
+
+        [TestMethod]
+        public void ParseCoeffitionsWhenSecondCoeffitionIsLessThanZero()
+        {
+            var equation = "10x^2-10x+20=0";
+            var solver = new EquationSolver();
+            var coeffitions = new[] { 10.0, -10.0, 20.0 };
+            var coeffitionsFromSolver = solver.Parse(equation);
+            Assert.IsTrue(coeffitions[0] == coeffitionsFromSolver[0] &&
+                          coeffitions[1] == coeffitionsFromSolver[1] &&
+                          coeffitions[2] == coeffitionsFromSolver[2]);
+        }
+
+        [TestMethod]
+        public void FindCoeffitionsInEquationWhenAllCoeffitionsAreEqualsOne()
         {
             //act
             var solver = new EquationSolver();
@@ -68,21 +82,70 @@ namespace EquationSolverTests
         }
 
         [TestMethod]
-        public void SolveEquation()
+        public void FindCoeffitionsInEquationWhenAllCoeffitionsAreEqualsMinusOne()
         {
+            //act
+            var solver = new EquationSolver();
+            var equation1 = "-x^2-x-1=0";
+            equation1 = equation1.Remove(equation1.IndexOf("^2"), 2);
+            var coeffitions = new double[3];
+            //arrange
+            for (int i = 0; i < 3; i++)
+            {
+                coeffitions[i] = solver.FindCoefficient(ref equation1);
+            }
+            //assert
+            Assert.IsTrue(coeffitions[0] == -1.0 &&
+                          coeffitions[1] == -1.0 &&
+                          coeffitions[2] == -1.0);
+        }
+
+        [TestMethod]
+        public void CalculateDiscriminant()
+        {
+            //act
             var equationSolver = new EquationSolver();
-            var equation1 = "x^2-4x+4=0";
-            var equation2 = "x^2-6x+8=0";
-            var solution1 = new[] {2.0, 2.0};
-            var solution2 = new[] {4.0, 2.0};
-            var fromSolver1 = equationSolver.Solve(equationSolver.Parse(equation1));
-            var fromSolver2 = equationSolver.Solve(equationSolver.Parse(equation2));
+            var a = 4.0;
+            var b = 8.0;
+            var c = 2.0;
+            //arrange
+            var discriminant = equationSolver.CalculateDiscriminant(a, b, c);
+            //Assert
+            Assert.AreEqual(discriminant,32.0);
+        }
 
-            Assert.IsTrue(fromSolver1[0] == solution1[0] &&
-                          fromSolver1[1] == solution1[1]);
+        [TestMethod]
+        public void SolveEquationWhenSolutionsAreSame()
+        {
+            // act
+            var equationSolver = new EquationSolver();
+            var equation = "x^2-4x+4=0";
+            var coefficitions = equationSolver.Parse(equation);
+            var solutions = new[] { 2.0, 2.0 };
 
-            Assert.IsTrue(fromSolver2[0] == solution2[0] &&
-                          fromSolver2[1] == solution2[1]);
+            // arrange
+            var solutionsFromSolver = equationSolver.Solve(coefficitions[0],coefficitions[1],coefficitions[2]);
+
+            //assert
+            Assert.IsTrue(solutionsFromSolver[0] == solutions[0] &&
+                          solutionsFromSolver[1] == solutions[1]);
+        }
+
+        [TestMethod]
+        public void SolveEquationWhenSolutionsAreNotSame()
+        {
+            //act
+            var equationSolver = new EquationSolver();
+            var equation = "x^2-6x+8=0";
+            var coefficitions = equationSolver.Parse(equation);
+            var solutions = new[] { 4.0, 2.0 };
+
+            //arrange
+            var solutionsFromSolver = equationSolver.Solve(coefficitions[0], coefficitions[1], coefficitions[2]);
+
+            //assert
+            Assert.IsTrue(solutionsFromSolver[0] == solutions[0] &&
+                          solutionsFromSolver[1] == solutions[1]);
 
 
         }
